@@ -15,7 +15,7 @@ openssl.cnf 文件 从 CentOS 系统的 `/etc/pki/tls/` 目录下拷贝来的，
 
 
 ```
-cal-ca-ext ]
+[ local-ca-ext ]
 keyUsage = critical, cRLSign, digitalSignature, keyEncipherment, keyCertSign
 basicConstraints = critical,CA:true
 
