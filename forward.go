@@ -11,6 +11,13 @@ const(
 	key = "./pki/server.key"
 )
 
+func main(){
+	http.HandleFunc("/hello", ForwardRequest)
+	go http.ListenAndServe(":80", nil)
+	go http.ListenAndServeTLS(":443", crt, key, nil)
+	time.Sleep(10*time.Second)
+}
+
 func ForwardRequest(w http.ResponseWriter, req *http.Request) {
 	host := req.Header.Get("BACKEND")
 
@@ -21,11 +28,4 @@ func ForwardRequest(w http.ResponseWriter, req *http.Request) {
 	}
 	proxy := &httputil.ReverseProxy{Director: director}
 	proxy.ServeHTTP(w, req)
-}
-
-func main(){
-	http.HandleFunc("/hello", ForwardRequest)
-	go http.ListenAndServe(":80", nil)
-	go http.ListenAndServeTLS(":443", crt, key, nil)
-	time.Sleep(10*time.Second)
 }
